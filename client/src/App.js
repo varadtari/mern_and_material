@@ -10,6 +10,7 @@ function App() {
   const [colDefs, setColDefs] = useState();
   const [data, setData] = useState();
   let fileData;
+  let finalData;
 
   const getExention = (file) => {
     const parts = file.name.split(".");
@@ -28,7 +29,7 @@ function App() {
     });
     return rows;
   };
-
+ 
 
   const importExcel = (e) => {
     const file = e.target.files[0];
@@ -58,19 +59,14 @@ function App() {
 
       //removing header
       fileData.splice(0, 1);
-      let finalData=convertToJson(headers, fileData);
+      finalData=convertToJson(headers, fileData);
       setData(finalData);
       
       console.log("data 5",fileData)
       //adding to database...
         //alert("varad boi");
        // console.log("data",fileData);
-        Axios.post('http://localhost:3001/insert',{fileData : finalData}).then(()=>{
-          alert("success...");
-          console.log("data",fileData);
-        }).catch(()=>{
-          alert("sorry ");
-        })
+        
       
     };
 
@@ -85,27 +81,38 @@ function App() {
       setColDefs([]);
     }
   };
-  
+  const importToDatabase = (e) => {
+    Axios.post('http://localhost:3001/insert',{fileData : finalData}).then(()=>{
+      alert("success...");
+      console.log("data",fileData);
+    }).catch(()=>{
+      alert("sorry ");
+    })
+
+  };
 
   return (
     <div className="App">
       <h1 align="center"></h1>
       <h4 align="center"></h4>
-      <input type="file" formMethod="POST" onChange={importExcel} />
+      <input type="file" onChange={importExcel} />
+      <button onClick={importToDatabase}>Submit</button>
       
       
       <MaterialTable title="" data={data} columns={colDefs} 
       editable={{
         onRowAdd:(newRow)=>new Promise((resolve,reject)=>{
              setData([...data,newRow])
-                  
+             console.log("data after row add",...data);   
              setTimeout(()=>resolve(),500)
         }),
         onRowUpdate:(newData,oldData)=>new Promise((resolve,reject)=>{
           const dataUpdate = [...data];
                     const index = oldData.tableData.id;
                     dataUpdate[index] = newData;
+                    console.log("updated data",newData);
                     setData([...dataUpdate]);
+                    console.log("full updated data",dataUpdate);
           
           setTimeout(()=>resolve(),500)
      }),
@@ -116,14 +123,21 @@ function App() {
              const index = oldData.tableData.id;
              dataDelete.splice(index, 1);
              setData([...dataDelete]);
-
+             console.log("datadeleted",dataDelete);
+             
+             console.log("final updated data",data);
              resolve();
          }, 500);
+         
      })
-     
+    
       }}
+      
+      
       options={{ pageSizeOptions: [3,5,10,20,50], exportButton: true, exportAllData: true ,actionsColumnIndex:-1,addRowPosition:"first",paginationType:"stepped",paginationPosition:"top",sorting:true,grouping:true,exportFileName:"{parts}"}} />
     </div>
+    
+    
   );
 }
 
