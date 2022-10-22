@@ -82,15 +82,15 @@ function App() {
     }
   };
   const importToDatabase = (e) => {
-    Axios.post('http://localhost:3001/insert',{fileData : finalData}).then(()=>{
-      alert("success...");
-      console.log("data",fileData);
+   // setData(finalData);
+   console.log("api",data);
+    Axios.post('http://localhost:3001/insert',{data : data}).then(()=>{
+      alert("success...")
     }).catch(()=>{
       alert("sorry ");
     })
 
   };
-
   return (
     <div className="App">
       <h1 align="center"></h1>

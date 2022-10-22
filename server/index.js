@@ -15,7 +15,7 @@ mongoose.connect(
 
 app.post("/insert", async (req, res) => {
   //app.use(bodyParser.urlencoded({extended:false}));
-  const fileData=req.body.finalData; 
+  const fileData=req.body.data; 
   console.log("backend",fileData);
  // fileData=XLSX.utils.sheet_to_json(workbook.Sheets[sheet_namelist[x]]);
   try {
