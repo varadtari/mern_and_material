@@ -134,7 +134,7 @@ function App() {
       }}
       
       
-      options={{ pageSizeOptions: [3,5,10,20,50], exportButton: true, exportAllData: true ,actionsColumnIndex:-1,addRowPosition:"first",paginationType:"stepped",paginationPosition:"top",sorting:true,grouping:true,exportFileName:"{parts}"}} />
+      options={{ pageSizeOptions: [3,5,10,20,50], exportButton: true, exportAllData: true ,actionsColumnIndex:-1,addRowPosition:"first",paginationType:"stepped",paginationPosition:"top",sorting:true,grouping:true}} />
     </div>
     
     
